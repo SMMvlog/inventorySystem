@@ -1,0 +1,39 @@
+{% extends 'basic.html' %}
+
+{% block title %} Login {% endblock title %}
+
+{% block body %}
+
+{% if messages %}
+{% for message in messages %}
+<script>
+alert('{{message}}')
+</script>
+{% endfor %}
+{% endif %}
+
+<div class="container">
+
+<div class="row">
+<div class="col-md-7 offset-3">
+<h1 class="text-center mt-5">Login</h1>
+<form action="" method="post" class="shadow p-5">
+{% csrf_token %}
+<div>
+<label for="username">Username:</label>
+<input type="text" class="form-control" name="uname" id="uname" placeholder="Plase enter username" required>
+</div>
+<div>
+<label for="passowrd">Password:</label>
+<input type="Password" class="form-control" name="pass" id="pass" placeholder="Please enter password" required>
+</div>
+<br>
+<button value="submit" class="btn btn-primary">Submit</button>
+<a href="{% url 'password_reset' %}" class="btn btn-primary" style="margin-left:200px;" > Forgot Passowrd</a>
+</form>
+</div>
+</div>
+</div>
+
+
+{% endblock body %}

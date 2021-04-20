@@ -1,0 +1,57 @@
+{% extends 'basic.html' %}
+
+{% block title %} Home {% endblock title %}
+
+{% block body %}
+
+{% if messages %}
+{% for message in messages %}
+<script>
+alert('{{message}}')
+</script>
+{% endfor %}
+{% endif %}
+<div class="container mb-3">
+<form action="" method="post" class="shadow p-5">
+{% csrf_token %}
+<div>
+<label for="itemno">Item No:</label>
+<input type="text" class="form-control" name="itemno" id="itemno" placeholder="enter item No" required>
+</div>
+<div>
+<label for="clientid">Client id:</label>
+<select name="clientid" id="clientid" class="form-control">
+            {% for c in client %}
+            <option value={{c.id}}>
+            {{c.username}}
+            </option>
+          {% endfor %}
+            <br>
+</div>
+<div>
+<label for="itemsku">item SKU:</label>
+<input type="text" class="form-control" name="itemsku" id="itemsku" placeholder="enter item sku" required>
+</div>
+<div>
+<label for="description">Description:</label>
+<input type="text" class="form-control" name="description" id="description" placeholder="enter description" required>
+</div>
+<div>
+<label for="price">Price:</label>
+<input type="decimal" class="form-control" name="price" id="price" placeholder="enter price" required>
+</div>
+<div>
+<br>
+<label for="availablity">Availablity:</label>
+<select name="availablity" id="availablity">
+  <option value="1">1</option>
+  <option value="0">0</option>
+</select>
+</div>
+<br>
+<div>
+<button type="submit" class="btn btn-primary">Submit</button>
+</div>
+</form>
+</div>
+{% endblock body %}

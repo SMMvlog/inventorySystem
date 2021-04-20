@@ -1,0 +1,40 @@
+{% extends 'basic.html' %}
+
+{% block title %} Home {% endblock title %}
+
+{% block body %}
+
+{% if messages %}
+{% for message in messages %}
+<script>
+alert('{{message}}')
+</script>
+{% endfor %}
+{% endif %}
+<div class="container">
+<table class="table table-bordered table-hover mt-5">
+<thead>
+<tr>
+<th>item No</th>
+<th>client id</th>
+<th>item SKU</th>
+<th>item description</th>
+<th>item price</th>
+<th>item availability</th>
+<tbody>
+{% for c in client %}
+<tr>
+<td>{{c.item_No}}</td>
+<td>{{c.client_id.id}}</td>
+<td>{{c.item_SKU}}</td>
+<td>{{c.item_description}}</td>
+<td>{{c.item_price}}</td>
+<td>{{c.item_availability}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</tr>
+</thead>
+</table>
+</div>
+{% endblock body %}
