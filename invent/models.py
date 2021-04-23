@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class ClientInventory(models.Model):
     item_No = models.IntegerField()
-    client_id = models.ForeignKey(User,null=True,default=1, on_delete=models.CASCADE)
+    client_id = models.ForeignKey(User,on_delete=models.CASCADE)
     item_SKU = models.CharField(max_length=50)
     item_description = models.CharField(max_length=50)
     item_price = models.DecimalField(max_digits=5,decimal_places=2)

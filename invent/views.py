@@ -23,57 +23,46 @@ def registration(request):
         fm=SignupForm()
         return render(request,'signup1.html',{'fm':fm})
     return render(request,'signup1.html')
-    # user = User.objects.all()
-    # if request.method=="POST":
-    #     uname = request.POST['uname']
-    #     email = request.POST['email']
-    #     password = request.POST['pass']
-    #     a = make_password(password)
-    #     try:
-    #         user=User(username=uname,email=email,password=a)
-    #         if User.objects.filter(username=uname):
-    #              messages.error(request,"username already Exists!!")
-    #         # elif User.objects.filter(email=email):
-    #         #     messages.error(request,"emaid id already Exists!!")
-    #         else:
-    #             user.save()
-    #             messages.success(request,"Your Account Created Succesfully!!")
-    #     except:
-    #         messages.error(request,"error")
-    # return render(request,'signup.html',{'user':user})
 def loginu(request):
-    if request.method=="POST":
-        uname = request.POST['uname']
-        password1 = request.POST['pass']
-        user = authenticate(username=uname,password=password1)
-        if user:
-            login(request,user)
-            messages.success(request,"Login Successfully!!")
-            return redirect("/")
-        else:
-            messages.error(request,"Something wrong")
-            return render(request,'login.html')
-    return render(request,'login.html')
+    if not request.user.is_authenticated:
+        if request.method=="POST":
+            uname = request.POST['uname']
+            password1 = request.POST['pass']
+            user = authenticate(username=uname,password=password1)
+            if user:
+                login(request,user)
+                messages.success(request,"Login Successfully!!")
+                return redirect("/")
+            else:
+                messages.error(request,"Something wrong")
+                return render(request,'login.html')
+        return render(request,'login.html')
+    else:
+        messages.error(request,"you are already login")
+        return redirect("/")
 
 def logoutn(request):
     if request.user.is_authenticated:
         logout(request)
         return redirect("login")
+
 def inventory(request):
-    if request.method=="POST":
-        item_no = request.POST['itemno']
-        client_id = request.POST['clientid']
-        item_SKU = request.POST['itemsku']
-        description = request.POST['description']
-        price = request.POST['price']
-        availablity = request.POST['availablity']
-        client = User.objects.filter(id=client_id)
-        # print("client_ID:",client,type(client))
-        # print("client:",client_id)
-        inventory=ClientInventory(item_No=item_no,client_id=client, item_SKU=item_SKU,item_description=description,
-        item_price=price,item_availability=availablity)
-        inventory.save()
-        return render(request,'client_inventory.html')
+    if request.user.is_authenticated:
+        client1 = User.objects.all()
+        if request.method=="POST":
+            item_no = request.POST['itemno']
+            client_id = request.POST['clientid']
+            item_SKU = request.POST['itemsku']
+            description = request.POST['description']
+            price = request.POST['price']
+            availablity = request.POST['availablity']  
+            client = User.objects.get(id=client_id)
+            if client:
+             ClientInventory.objects.create(item_No=item_no,client_id=client, item_SKU=item_SKU,
+             item_description=description,item_price=price,item_availability=availablity)
+             return render(request,'client_inventory.html',{'client':client1})
+        else:
+            return render(request,'client_inventory.html',{"client":client1})
     else:
-        client = User.objects.all()
-        return render(request,'client_inventory.html',{"client":client})
+        messages.error(request,"You have to login first")
+        return redirect('login')
